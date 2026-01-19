@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>iStore - Gerenciador de Vendas e Estoque</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Hide arrows from number inputs */
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    input[type=number] {
+      -moz-appearance: textfield;
+      appearance: textfield;
+    }
+
+    /* Light Theme Colors */
+    :root {
+      --color-background: 243 244 246;
+      /* #F3F4F6 */
+      --color-surface: 255 255 255;
+      /* #FFFFFF */
+      --color-surface-secondary: 249 250 251;
+      /* #F9FAFB */
+      --color-border: 229 231 235;
+      /* #E5E7EB */
+      --color-primary: 31 41 55;
+      /* #1F2937 */
+      --color-on-primary: 255 255 255;
+      /* #FFFFFF */
+      --color-secondary: 75 85 99;
+      /* #4B5563 */
+      --color-muted: 107 114 128;
+      /* #6B7280 */
+      --color-accent: 59 130 246;
+      /* #3B82F6 */
+      --color-accent-light: 219 234 254;
+      /* #DBEAFE */
+      --color-danger: 239 68 68;
+      /* #EF4444 */
+      --color-danger-light: 254 226 226;
+      /* #FEE2E2 */
+      --color-success: 16 185 129;
+      /* #10B981 */
+      --color-success-light: 209 250 229;
+      /* #D1FAE5 */
+      --color-warning: 245 158 11;
+      /* #F59E0B */
+    }
+
+    /* Custom Checkbox/Radio Styles */
+    input[type="checkbox"].form-checkbox,
+    input[type="radio"].form-radio {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      background-color: #fff;
+      border-color: rgb(var(--color-border));
+      border-width: 1px;
+      padding: 0;
+      print-color-adjust: exact;
+      display: inline-block;
+      vertical-align: middle;
+      background-origin: border-box;
+      user-select: none;
+      flex-shrink: 0;
+    }
+
+    input[type="checkbox"].form-checkbox {
+      border-radius: 0.25rem;
+    }
+
+    input[type="radio"].form-radio {
+      border-radius: 100%;
+    }
+
+    input[type="checkbox"].form-checkbox:checked {
+      border-color: transparent;
+      background-color: #60a5fa;
+      /* light blue */
+      background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
+      background-size: 100% 100%;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    input[type="radio"].form-radio:checked {
+      border-color: transparent;
+      background-color: #60a5fa;
+      /* light blue, same as checkbox */
+      background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='3'/%3e%3c/svg%3e");
+      background-size: 100% 100%;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    /* Custom Scrollbar */
+    .custom-scrollbar::-webkit-scrollbar {
+      height: 8px;
+      /* height of horizontal scrollbar */
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: rgb(var(--color-surface-secondary));
+      /* light gray track */
+      border-radius: 4px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: rgb(var(--color-border));
+      /* medium gray thumb */
+      border-radius: 4px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: rgb(var(--color-muted));
+      /* darker gray on hover */
+    }
+
+    /* Animations */
+    @keyframes fade-in-up {
+      from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.98);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .animate-fade-in-up {
+      animation: fade-in-up 0.2s ease-out forwards;
+    }
+
+    @keyframes fade-in {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    .animate-fade-in {
+      animation: fade-in 0.2s ease-out forwards;
+    }
+
+    @keyframes slide-up {
+      from {
+        opacity: 0;
+        transform: translateY(15px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-slide-up {
+      animation: slide-up 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes slide-down {
+      from {
+        opacity: 0;
+        transform: translateY(-15px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-slide-down {
+      animation: slide-down 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes scale-in {
+      from {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .animate-scale-in {
+      animation: scale-in 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes spin {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .animate-spin-slow {
+      animation: spin 3s linear infinite;
+    }
+
+    @keyframes pulse-slow {
+
+      0%,
+      100% {
+        opacity: 0.8;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 1;
+        transform: scale(1.05);
+      }
+    }
+
+    .animate-pulse-slow {
+      animation: pulse-slow 3s ease-in-out infinite;
+    }
+
+    @keyframes bounce-subtle {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-3px);
+      }
+    }
+
+    .animate-bounce-subtle {
+      animation: bounce-subtle 1s ease-in-out infinite;
+    }
+  </style>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            background: 'rgb(var(--color-background) / <alpha-value>)',
+            surface: 'rgb(var(--color-surface) / <alpha-value>)',
+            'surface-secondary': 'rgb(var(--color-surface-secondary) / <alpha-value>)',
+            border: 'rgb(var(--color-border) / <alpha-value>)',
+            primary: 'rgb(var(--color-primary) / <alpha-value>)',
+            'on-primary': 'rgb(var(--color-on-primary) / <alpha-value>)',
+            secondary: 'rgb(var(--color-secondary) / <alpha-value>)',
+            muted: 'rgb(var(--color-muted) / <alpha-value>)',
+            accent: 'rgb(var(--color-accent) / <alpha-value>)',
+            'accent-light': 'rgb(var(--color-accent-light) / <alpha-value>)',
+            danger: 'rgb(var(--color-danger) / <alpha-value>)',
+            'danger-light': 'rgb(var(--color-danger-light) / <alpha-value>)',
+            success: 'rgb(var(--color-success) / <alpha-value>)',
+            'success-light': 'rgb(var(--color-success-light) / <alpha-value>)',
+            warning: 'rgb(var(--color-warning) / <alpha-value>)',
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/index.css">
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://aistudiocdn.com/react@^19.1.1",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.1.1/",
+    "react/": "https://aistudiocdn.com/react@^19.1.1/",
+    "react-router-dom": "https://aistudiocdn.com/react-router-dom@^7.8.2",
+    "recharts": "https://aistudiocdn.com/recharts@^3.1.2",
+    "@supabase/supabase-js": "https://esm.sh/@supabase/supabase-js@^2.90.1"
+  }
+}
+</script>
+  <script type="module" crossorigin src="/assets/index-BMA--0RW.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/react-vendor-Bv8thS0I.js">
+  <link rel="modulepreload" crossorigin href="/assets/supabase-C1Qlw3jS.js">
+</head>
+
+<body class="bg-background text-primary antialiased">
+  <div id="root"></div>
+</body>
+
+</html>
